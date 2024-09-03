@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initial Data Analysis</title>
+    <style>
+       img.diabetes-plot {
+            width: 50%; /* Adjusts the width of the image to fit the container */
+            height: auto; /* Keeps the aspect ratio of the image */
+            display: block; /* Removes any unwanted space around the image */
+            margin: 0 auto; /* Centers the image horizontally */
+        }
+        pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-left: 3px solid #ed59ed;
+            color: #666;
+            page-break-inside: avoid;
+            font-family: monospace;
+            font-size: 18px; /* Changed from 15px to 18px */
+            line-height: 1.6;
+            margin-bottom: 1.6em;
+            max-width: 100%;
+            overflow: auto;
+            padding: 1em 1.5em;
+            display: block;
+            word-wrap: break-word;
+        }
+        p {
+            font-family: Arial, sans-serif;
+        }
+        code {
+            font-size: 16px; /* Set font size for <code> elements */
+        }
+        .content-wrapper {
+            display: flex;
+            justify-content: space-around; /* Adjusts space distribution between the table and the text */
+        }
+        .text-column {
+            text-align: left;
+            width: 70%; /* Adjust width as needed */
+        }
+        .table-column {
+            width: 30%; /* Adjust width as needed */
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-family: Arial, sans-serif;">Data Analysis Exploration</h1>
+    <h2 style="font-family: Arial, sans-serif; font-size: 20px;">Exploration 1: Reporting_Frame</h2>
+    <p>I started by picking out a few aspects of the data I thought would be interesting to analyze. Ideally, I'd have time to investigate different relationships more in depth, but I think these were good starting points
+      for my questions later on.
+    </p>
+    <p>Looking at <code><b>Reporting_Frame</b></code> first,</p>
+    <pre>
+frame_by_source = data.groupby(['Source_Grouped', 'Reporting_Frame']).size().unstack().fillna(0)</pre>
+    <div class="content-wrapper">
+        <div class="table-column">
+            <table border="1" class="dataframe">
+                <thead>
+                  <tr style="text-align: right;">
+                    <th>Reporting_Frame</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                  </tr>
+                  <tr>
+                    <th>Source_Grouped</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>CNN/CNN Wire</th>
+                    <td>171</td>
+                    <td>33</td>
+                    <td>0</td>
+                    <td>5</td>
+                  </tr>
+                  <tr>
+                    <th>NYT</th>
+                    <td>198</td>
+                    <td>43</td>
+                    <td>0</td>
+                    <td>18</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        <div class="text-column">
+            <p>Overall, it looks like the most popular reporting frame is episodic and it doesn't seem like the distributions differ much between CNN & the NYT besides the NYT seeming to have relatively more stories with both episodic and thematic reporting frames. I was curious to see if this finding was consistent
+              over the timeframe we looked at so I then sorted by <b><code>Year</code></b>.</p>
+        </div>
+    </div>
+    <pre>
+  frame_by_year_and_source = data.groupby(['Year', 'Source_Grouped', 'Reporting_Frame']).size().unstack().fillna(0)
+</pre>
+
+<div class="content-wrapper">
+    <div class="table-column">
+        <table border="1" class="dataframe">
+            <thead>
+                <tr style="text-align: right;">
+                    <th></th>
+                    <th>Reporting_Frame</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                </tr>
+                <tr>
+                    <th>Year</th>
+                    <th>Source_Grouped</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th rowspan="2" valign="top">2011</th>
+                    <th>CNN/CNN Wire</th>
+                    <td>4</td>
+                    <td>6</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <th>NYT</th>
+                    <td>14</td>
+                    <td>6</td>
+                    <td>0</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2012</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>14</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>34</td>
+                  <td>5</td>
+                  <td>0</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2013</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>18</td>
+                  <td>4</td>
+                  <td>0</td>
+                  <td>3</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>26</td>
+                  <td>7</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2014</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>7</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>30</td>
+                  <td>4</td>
+                  <td>0</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2015</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>6</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>17</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2016</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>13</td>
+                  <td>3</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>17</td>
+                  <td>3</td>
+                  <td>0</td>
+                  <td>4</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2017</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>8</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>15</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2018</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>10</td>
+                  <td>3</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>10</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2019</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>27</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>18</td>
+                  <td>4</td>
+                  <td>0</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2020</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>27</td>
+                  <td>5</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>6</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2021</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>15</td>
+                  <td>4</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>5</td>
+                  <td>3</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th rowspan="2" valign="top">2022</th>
+                  <th>CNN/CNN Wire</th>
+                  <td>22</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <th>NYT</th>
+                  <td>6</td>
+                  <td>5</td>
+                  <td>0</td>
+                  <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-column">
+      <br><br>
+      <br><br>
+        <p>This was an interesting result to see. It looks like from 2011-2017, for episodic framed stories, the NYT dominated in comparison to CNN.
+          <br><br>
+
+          However, in 2018, both CNN and NYT had 10 episodic framed stories. After 2018, CNN has increasingly more episodic-framed stories compared to the NYT year after year.
+          I'm wondering if this is a trend to look into at the individual story level. 
+          <br><br>
+          <i>Does this reflect an editorial shift towards more sensational, emotional stories on CNN's part?
+          How does this differ in relation to the type of diabetes mentioned?</i>
+          <br><br>
+          Two possible reasons for this shift I'm thinking about:<br>
+          1. <i>Audience Expectations:</i> The shift may reflect different audience expectations. CNN’s audience might prefer quick, event-focused news, while NYT readers may look for more detailed analyses of broader issues.
+          <br><br>
+          2. <i>Content Consumption: </i>Episodic stories are often easier to consume quickly, which might suit the fast-paced nature of CNN’s content delivery. Thematic stories, on the other hand, typically require more engagement and time, which might align better with NYT's print and digital readership.
+          <br><br>
+          However, I don't really see any noticeable trends over time with thematic-framed stories or stories with no frame defined, so I'm not sure where the NYT would be pivoting to given the numbers remaining relatively stagnant for thematic coverage.
+          The rise of news consummption on mobile apps and newsletters (which the NYT is investing more heavily into vs. CNN I think) could be a potential explanation for why there isn't a corresponding increase in the NYT's thematic coverage to pair with the decrease in episodic news shown in the data.
+    </div>
+</div>
+
+<h2 style="font-family: Arial, sans-serif; font-size: 20px;">Exploration 2: Obesity_Weight & Attribution</h2>
+<p>The next relationship I wanted to examine was between the Obesity_Weight variable and type of diabetes and framing used. I remember when we first started coding articles, one of the most common misconceptions we were looking out for in the media narrative was the idea that being overweight or obese caused diabetes. 
+  Especially for Type 1, this is not a medical fact and more so part of the stigma and misinformation around diabetes that mainstream media has not done a good job in dispelling. I started by just seeing what the breakdown looked like
+  for <b><code>Obesity_Weight</code></b> and type of diabetes mentioned.
+</p>
+<pre>
+  type1_with_obesity = data[(data['Mentioned_T1'] == 1) & (data['Obesity_Weight'] == 1)].shape[0]
+  type2_with_obesity = data[(data['Mentioned_T2'] == 1) & (data['Obesity_Weight'] == 1)].shape[0]
+  
+  type1_obesity_proportion = type1_with_obesity / total_type1 if total_type1 != 0 else 0
+  type2_obesity_proportion = type2_with_obesity / total_type2 if total_type2 != 0 else 0
+</pre>
+<p>
+That gave me the graph on the left below. I'm not sure if these results would be considered statisically significant, but this was kind of surprising to me. 
+About 1/3 of articles about Type 1 diabetes mentioned obesity or weight. Given that the cause of Type 1 diabetes is not linked to these traits, I suspect that
+some of these are articles could be misleading. This would be a case where looking at the articles individually could be insightful.
+</p>
+<br>
+<p> Out of the articles about Type 2 diabetes that did mention obesity or weight, I was interested in seeing if there was an overarching frame associated with these articles.
+  The results of the code for this breakdown are displayed below in the graph on the right.
+</p>
+<pre>
+filtered_data = data[(data['Mentioned_T2'] == 1) & (data['Obesity_Weight'] == 1)]
+frame_breakdown = filtered_data['Prominent_Frame_2'].value_counts().sort_index()
+frame_labels = {1: 'Behavioral', 2: 'Societal', 3: 'Medical', 4: 'Indeterminate', 99: 'No frame used'}  # Adjust labels as needed
+frame_breakdown.index = frame_breakdown.index.map(frame_labels)
+</pre>
+<p>I was also surprised to see that the overwhelming number of these articles did not have a prominent frame when covering Type 2 diabetes attribution.
+  It is honestly pleasant from my perspective as a journalist to see that societal and medical frames followed as the next most popular frames used.
+  This could suggest that the media is framing obesity and Type 2 diabetes more as systemic issues requiring public policy or healthcare interventions rather than individual responsibility.
+  Again, would have to look at the articles individually to see if this is truly what is going on.
+</p>
+<div style="display: flex; justify-content: space-between;">
+    <img src="Figure_1.png" alt="Diabetes Data Plot" class="diabetes-plot" style="flex: 1; padding-right: 10px;">
+    <img src="Figure_3.png" alt="Diabetes Data Plot" class="diabetes-plot" style="flex: 1; padding-left: 10px;">
+</div>
+<p>With these results, I'm wondering: <i>Why is there such a high proportion of articles with no frame used? Is this trend present amongst other variable relatinoships too?</i>
+  Maybe this is a unique issue with articles discussing obesity/weight in particular, but I'm just speculating.</p>
+
+<h1 style="font-family: Arial, sans-serif;">Other Considerations</h1>
+<p>There are a ton of relationships I'd like to explore in this data set, but here are just a few questions to consider/discuss for the time being.
+<br>
+  1. <i>New medications and prominent frames</i>
+<br>
+What: Examine the relationship between mentions of new medications and the framing of diabetes. <br>
+Why: This could reveal if new medications are being framed as game-changers (e.g., with a medical or societal frame) or if their importance isn't really highlighted with a specific tone.
+<br><br>
+2. <i>Prediabetes and prominent frames</i>
+<br>
+What: Examine how prediabetes is framed in articles. <br>
+Why: Understanding the framing of prediabetes can reveal whether the media is downplaying/misrepresenting prediabetes, or if there is a specific narrative/frame used when discussing it.
+</p>
+</body>
+
+</html>
